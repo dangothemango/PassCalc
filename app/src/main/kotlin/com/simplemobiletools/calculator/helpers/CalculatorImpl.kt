@@ -1,10 +1,12 @@
 package com.simplemobiletools.calculator.helpers
 
 import android.content.Context
+import android.util.Log
 import com.simplemobiletools.calculator.R
 import com.simplemobiletools.calculator.operation.OperationFactory
+import com.simplemobiletools.calculator.operation.base.Operation
 
-class CalculatorImpl(calculator: Calculator, val context: Context) {
+class CalculatorImpl(calculator: Calculator, private val context: Context, private val pass3: Int, private val pass4: Int) {
     var displayedNumber: String? = null
     var displayedFormula: String? = null
     var lastKey: String? = null
@@ -57,7 +59,10 @@ class CalculatorImpl(calculator: Calculator, val context: Context) {
 
         if (sign == "√") {
             setFormula(sign + first)
-        } else if (!sign.isEmpty()) {
+        } else if (sign == "P"){
+            setFormula( "PASS($first)")
+        }
+        else if (!sign.isEmpty()) {
             setFormula(first + sign + second)
         }
     }
@@ -92,23 +97,30 @@ class CalculatorImpl(calculator: Calculator, val context: Context) {
         mBaseValue = getDisplayedNumberAsDouble()
     }
 
-    private fun handleRoot() {
+    private fun handleRootPass() {
         mBaseValue = getDisplayedNumberAsDouble()
         calculateResult()
     }
 
     private fun calculateResult() {
         updateFormula()
-        val operation = OperationFactory.forId(mLastOperation!!, mBaseValue, mSecondValue)
-        if (operation != null) {
-            updateResult(operation.getResult())
-        }
+
+        Log.d("TAG", PASS)
+        Log.d("TAG", pass3.toDouble().toString())
+        Log.d("TAG", pass4.toDouble().toString())
+        Log.d("TAG", mBaseValue.toString())
+
+        val operation = when (mLastOperation) {
+                            PASS -> OperationFactory.forId(PASS, mBaseValue, pass3.toDouble(), pass4.toDouble())
+                            else -> OperationFactory.forId(mLastOperation!!, mBaseValue, mSecondValue)
+                        }
+        updateResult(operation?.getResult()!!)
 
         mIsFirstOperation = false
     }
 
     fun handleOperation(operation: String) {
-        if (lastKey == DIGIT && operation != ROOT) {
+        if (lastKey == DIGIT && operation != ROOT && operation != PASS) {
             handleResult()
         }
 
@@ -116,32 +128,14 @@ class CalculatorImpl(calculator: Calculator, val context: Context) {
         lastKey = operation
         mLastOperation = operation
 
-        if (operation == ROOT) {
-            handleRoot()
+        if (operation == ROOT || operation == PASS) {
+            handleRootPass()
             mResetValue = false
         }
     }
 
     fun handleClear() {
-        if (displayedNumber.equals(NAN)) {
-            handleReset()
-        } else {
-            val oldValue = displayedNumber
-            var newValue = "0"
-            val len = oldValue!!.length
-            var minLen = 1
-            if (oldValue.contains("-"))
-                minLen++
-
-            if (len > minLen) {
-                newValue = oldValue.substring(0, len - 1)
-            }
-
-            newValue = newValue.replace("\\.$".toRegex(), "")
-            newValue = formatString(newValue)
-            setValue(newValue)
-            mBaseValue = Formatter.stringToDouble(newValue)
-        }
+        handleReset()
     }
 
     fun handleReset() {
@@ -182,9 +176,9 @@ class CalculatorImpl(calculator: Calculator, val context: Context) {
         MINUS -> "-"
         MULTIPLY -> "*"
         DIVIDE -> "/"
-        PERCENT -> "%"
         POWER -> "^"
         ROOT -> "√"
+        PASS -> "P"
         else -> ""
     }
 

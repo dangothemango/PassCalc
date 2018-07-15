@@ -1,6 +1,7 @@
 package com.simplemobiletools.calculator.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.simplemobiletools.calculator.R
 import com.simplemobiletools.calculator.extensions.config
@@ -12,9 +13,32 @@ import java.util.*
 
 class SettingsActivity : SimpleActivity() {
 
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        prefs = this.getSharedPreferences(com.simplemobiletools.commons.helpers.PREFS_KEY, android.content.Context.MODE_PRIVATE)
+
+        update_constants_button.setOnClickListener { updatePassConstants() }
+    }
+
+    private fun updatePassConstants() {
+        val editor = prefs.edit()
+        if (three_digit_edit_text.length() == 3) {
+            val three: Int = three_digit_edit_text.text.toString().toInt()
+            editor.putInt("pass3",three)
+        }
+        if (four_digit_edit_text.length() == 4) {
+            val four: Int = four_digit_edit_text.text.toString().toInt()
+            editor.putInt("pass4",four)
+        }
+        if (editor.commit()){
+            three_digit_edit_text.text.clear()
+            four_digit_edit_text.text.clear()
+        }
     }
 
     override fun onResume() {
@@ -25,7 +49,6 @@ class SettingsActivity : SimpleActivity() {
         setupAvoidWhatsNew()
         setupVibrate()
         setupPreventPhoneFromSleeping()
-        setupCustomizeWidgetColors()
         updateTextColors(settings_scrollview)
     }
 
@@ -66,15 +89,6 @@ class SettingsActivity : SimpleActivity() {
         settings_prevent_phone_from_sleeping_holder.setOnClickListener {
             settings_prevent_phone_from_sleeping.toggle()
             config.preventPhoneFromSleeping = settings_prevent_phone_from_sleeping.isChecked
-        }
-    }
-
-    private fun setupCustomizeWidgetColors() {
-        settings_customize_widget_colors_holder.setOnClickListener {
-            Intent(this, WidgetConfigureActivity::class.java).apply {
-                putExtra(IS_CUSTOMIZING_COLORS, true)
-                startActivity(this)
-            }
         }
     }
 }

@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Simple Calculator</string>
-    <string name="app_launcher_name">Calculator</string>
+    <string name="app_name">PassCalc</string>
+    <string name="app_launcher_name">PassCalc</string>
+
 
     <!-- Settings -->
     <string name="vibrate_on_button_press">Vibrate on button press</string>
@@ -21,9 +22,4 @@
 
         This app is just one piece of a bigger series of apps. You can find the rest of them at https://www.simplemobiletools.com
     </string>
-
-    <!--
-        Haven't found some strings? There's more at
-        https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
-    -->
 </resources>

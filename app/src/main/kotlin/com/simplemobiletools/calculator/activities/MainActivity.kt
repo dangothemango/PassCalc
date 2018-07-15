@@ -2,6 +2,7 @@ package com.simplemobiletools.calculator.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -26,19 +27,22 @@ class MainActivity : SimpleActivity(), Calculator {
     private var vibrateOnButtonPress = true
 
     lateinit var calc: CalculatorImpl
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         appLaunched(BuildConfig.APPLICATION_ID)
 
-        calc = CalculatorImpl(this, applicationContext)
+        prefs = this.getSharedPrefs()
+
+        calc = CalculatorImpl(this, applicationContext, prefs.getInt("pass3",0), prefs.getInt("pass4",0))
 
         btn_plus.setOnClickListener { calc.handleOperation(PLUS); checkHaptic(it) }
         btn_minus.setOnClickListener { calc.handleOperation(MINUS); checkHaptic(it) }
         btn_multiply.setOnClickListener { calc.handleOperation(MULTIPLY); checkHaptic(it) }
         btn_divide.setOnClickListener { calc.handleOperation(DIVIDE); checkHaptic(it) }
-        btn_percent.setOnClickListener { calc.handleOperation(PERCENT); checkHaptic(it) }
+        btn_pass.setOnClickListener { calc.handleOperation(PASS); checkHaptic(it) }
         btn_power.setOnClickListener { calc.handleOperation(POWER); checkHaptic(it) }
         btn_root.setOnClickListener { calc.handleOperation(ROOT); checkHaptic(it) }
 

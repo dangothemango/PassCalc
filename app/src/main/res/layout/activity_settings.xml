@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings_scrollview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -30,28 +31,6 @@
                 android:paddingLeft="@dimen/medium_margin"
                 android:paddingStart="@dimen/medium_margin"
                 android:text="@string/customize_colors"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/settings_customize_widget_colors_holder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:background="?attr/selectableItemBackground"
-            android:paddingBottom="@dimen/activity_margin"
-            android:paddingLeft="@dimen/normal_margin"
-            android:paddingRight="@dimen/normal_margin"
-            android:paddingTop="@dimen/activity_margin">
-
-            <com.simplemobiletools.commons.views.MyTextView
-                android:id="@+id/settings_customize_widget_colors_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:paddingLeft="@dimen/medium_margin"
-                android:paddingStart="@dimen/medium_margin"
-                android:text="@string/customize_widget_colors"/>
 
         </RelativeLayout>
 
@@ -146,5 +125,50 @@
                 android:text="@string/prevent_phone_from_sleeping"/>
 
         </RelativeLayout>
+
+        <LinearLayout
+
+            android:id="@+id/update_pass_constants_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:background="?attr/selectableItemBackground"
+            android:paddingBottom="@dimen/activity_margin"
+            android:paddingLeft="@dimen/normal_margin"
+            android:paddingRight="@dimen/normal_margin"
+            android:paddingTop="@dimen/activity_margin"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/three_digit_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:hint="3 digit number"
+                android:inputType="number"
+                android:textColorHint="@color/theme_dark_text_color"
+                android:textColor="@color/theme_dark_text_color"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/four_digit_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:hint="4 digit number"
+                android:textColorHint="@color/theme_dark_text_color"
+                android:textColor="@color/theme_dark_text_color"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/update_constants_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColorHint="@color/theme_dark_text_color"
+                android:text="Update"
+                tools:text="Update" />
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
